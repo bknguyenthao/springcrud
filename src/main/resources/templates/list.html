@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: head"></head>
+<body>
+	<nav th:replace="layout :: header"></nav>
+	
+	<div class="container main-content list">
+		<div th:if="${success}" class="row alert alert-success alert-dismissible">
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<span th:text="${success}"></span>
+		</div>
+
+		<th:block th:if="${#lists.isEmpty(customers)}">
+			<h3>No customers</h3>
+			<a th:href="@{/customer/create}" class="btn btn-success pull-left">
+					<span class="glyphicon glyphicon-plus"></span> Add new customer
+			</a>
+		</th:block>
+
+		<th:block th:unless="${#lists.isEmpty(customers)}">
+			<div class="row">
+			
+				<a th:href="@{/customer/create}" class="btn btn-success pull-left">
+					<span class="glyphicon glyphicon-plus"></span> Add new customer
+				</a>
+				
+				<form class="form-inline pull-right" action="#"
+					th:action="@{/customer/search-name}" method="GET">
+					<div class="form-group">
+						<input type="text" class="form-control" name="q" placeholder="Type customer name..." />
+					</div>
+					&nbsp;
+					<button type="submit" class="btn btn-primary">Search</button>
+				</form>
+
+
+<!-- 				<form class="form-inline pull-right" action="#" -->
+<!-- 					th:action="@{/customer/search-address}" method="GET"> -->
+<!-- 					<div class="form-group"> -->
+<!-- 						<input type="text" class="form-control" name="q" placeholder="Type customer address..." /> -->
+<!-- 					</div> -->
+<!-- 					&nbsp; -->
+<!-- 					<button type="submit" class="btn btn-primary">Search</button> -->
+<!-- 					&nbsp;&nbsp; -->
+<!-- 				</form> -->
+
+<!-- 				<form class="form-inline pull-right" action="#" -->
+<!-- 					th:action="@{/customer/search-email}" method="GET"> -->
+<!-- 					<div class="form-group"> -->
+<!-- 						<input type="text" class="form-control" name="q" placeholder="Type customer email..." /> -->
+<!-- 					</div> -->
+<!-- 					&nbsp; -->
+<!-- 					<button type="submit" class="btn btn-primary">Search</button> -->
+<!-- 				</form> -->
+
+
+<!-- 				<form class="form-inline pull-right" action="#" -->
+<!-- 					th:action="@{/customer/search-phone}" method="GET"> -->
+<!-- 					<div class="form-group"> -->
+<!-- 						<input type="text" class="form-control" name="q" placeholder="Type customer phone..." /> -->
+<!-- 					</div> -->
+<!-- 					&nbsp; -->
+<!-- 					<button type="submit" class="btn btn-primary">Search</button> -->
+<!-- 					&nbsp;&nbsp; -->
+<!-- 				</form> -->
+
+			</div>
+			<div class="row">
+				<table class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Address</th>
+							<th>Email</th>
+							<th>Phone</th>
+							<th>Edit</th>
+							<th>Delete</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="customer,iterStat : ${customers}">
+							<td th:text="${customer.id}"></td>
+							<td th:text="${customer.name}"></td>
+							<td th:text="${customer.address}"></td>
+							<td th:text="${customer.email}"></td>
+							<td th:text="${customer.phone}"></td>
+							<td>
+								<a th:href="@{/customer/{id}/edit(id=${customer.id})}">
+								<span class="glyphicon glyphicon-pencil"></span>
+								</a>
+							</td>
+							<td>
+								<a onclick="return confirm('Are you sure you want to delete this item?');"
+								th:href="@{/customer/{id}/delete(id=${customer.id})}">
+								<span class="glyphicon glyphicon-trash"></span>
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</th:block>
+	</div>
+
+	<footer th:replace="layout :: footer"></footer>
+</body>
+</html>
